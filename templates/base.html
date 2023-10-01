@@ -1,10 +1,40 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>App &mdash; Free Website Template, Free HTML5 Template by FreeHTML5.co</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+  <meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+  <meta name="author" content="FreeHTML5.co" />
+
+  <!-- Facebook and Twitter integration -->
+  <meta property="og:title" content=""/>
+  <meta property="og:image" content=""/>
+  <meta property="og:url" content=""/>
+  <meta property="og:site_name" content=""/>
+  <meta property="og:description" content=""/>
+  <meta name="twitter:title" content="" />
+  <meta name="twitter:image" content="" />
+  <meta name="twitter:url" content="" />
+  <meta name="twitter:card" content="" />
+
+  <!-- Bootstrap  -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <!-- Owl Carousel  -->
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+  <!-- Theme style  -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-$END$
-</body>
-</html>
+
+{% block content %}
+
+{% endblock %}

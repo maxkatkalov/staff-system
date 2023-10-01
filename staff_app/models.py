@@ -84,18 +84,19 @@ class StaffUser(AbstractUser):
     reporting_to = models.ForeignKey(
         "StaffUser",
         related_name="reporters",
+        null=True,
         on_delete=models.CASCADE
     )
-    salary = models.IntegerField()
+    salary = models.IntegerField(null=True)
     office = models.ForeignKey(
         Office,
         null=True,
         blank=True,
         on_delete=models.SET_NULL
     )
-    fire_date = models.DateField(default=None)
-    retirement_date = models.DateField(default=None)
-    last_salary_review = models.DateField(default=None)
+    fire_date = models.DateField(default=None, null=True)
+    retirement_date = models.DateField(default=None, null=True)
+    last_salary_review = models.DateField(default=None, null=True)
 
     def __str__(self) -> str:
         return f"{self.username}"
