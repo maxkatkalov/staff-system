@@ -1,0 +1,20 @@
+from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
+
+from .models import Company, StaffUser
+
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = ("name", "foundation_date", "copmany_staff_size", "description", "country_registry")
+
+
+class StaffUserCreateForm(UserCreationForm):
+    class Meta:
+        model = StaffUser
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+        )
+

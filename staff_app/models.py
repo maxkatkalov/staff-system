@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.urls import reverse
 
 
 class Company(models.Model):
@@ -21,6 +22,10 @@ class Company(models.Model):
         default='1-50'
     )
     description = models.TextField(null=True, blank=True)
+    country_registry = models.CharField(max_length=255, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("staff_app:company-detail", args=[self.pk])
 
     def __str__(self) -> str:
         return self.name
@@ -66,37 +71,38 @@ class Position(models.Model):
 
 
 class StaffUser(AbstractUser):
-    owner = models.BooleanField(default=False)
-    department = models.ForeignKey(
-        Department,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="members"
-    )
-    position = models.ForeignKey(
-        Position,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="position_employees"
-    )
-    reporting_to = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name="reporters",
-        null=True,
-        on_delete=models.CASCADE
-    )
-    salary = models.IntegerField(null=True)
-    office = models.ForeignKey(
-        Office,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
-    fire_date = models.DateField(default=None, null=True)
-    retirement_date = models.DateField(default=None, null=True)
-    last_salary_review = models.DateField(default=None, null=True)
+    # owner = models.BooleanField(default=False)
+    # company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="staff_users")
+    # department = models.ForeignKey(
+    #     Department,
+    #     on_delete=models.CASCADE,
+    #     null=True,
+    #     blank=True,
+    #     related_name="members"
+    # )
+    # position = models.ForeignKey(
+    #     Position,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name="position_employees"
+    # )
+    # reporting_to = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     related_name="reporters",
+    #     null=True,
+    #     on_delete=models.CASCADE
+    # )
+    # salary = models.IntegerField(null=True)
+    # office = models.ForeignKey(
+    #     Office,
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL
+    # )
+    # fire_date = models.DateField(default=None, null=True)
+    # retirement_date = models.DateField(default=None, null=True)
+    # last_salary_review = models.DateField(default=None, null=True)
 
     def __str__(self) -> str:
         return f"{self.username}"

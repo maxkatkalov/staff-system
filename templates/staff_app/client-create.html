@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+
+<form action="" method="post" novalidate>
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input type="submit">
+</form>
