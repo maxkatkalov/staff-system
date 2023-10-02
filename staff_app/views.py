@@ -11,8 +11,12 @@ from django.views.generic import (
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from staff_app.models import StaffUser, Company
-from .forms import CompanyForm, StaffUserCreateForm
+from staff_app.models import StaffUser, Company, Department
+from .forms import (
+    CompanyForm,
+    StaffUserCreateForm,
+    DepartmentForm
+)
 
 
 def index(request: HttpRequest):
@@ -64,6 +68,17 @@ class CompanyListView(ListView):
 
     def get_queryset(self):
         return get_user_model().objects.get(pk=self.request.user.pk).companies.all()
+
+
+class DepartmentCreateView(CreateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = "staff_app/department-creation.html"
+
+    def form_valid(self, form):
+        # Set the 'company' field to the certain company where this view called
+        form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
 
 
 class StaffUserCreate(CreateView):
