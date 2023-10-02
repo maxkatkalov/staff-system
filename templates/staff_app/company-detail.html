@@ -18,7 +18,15 @@
 <div class="container rounded bg-white mt-5 mb-5">
   <div class="row">
     <div class="col-md-3 border-right">
-      <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">{{ staffuser.email }}</span><span> </span></div>
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+        <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+        <span class="font-weight-bold">
+          <a href="{% url 'staff_app:company-update' company.pk %}" class="btn btn-primary">Update</a>
+          <span><a href="{% url 'staff_app:company-delete' company.pk %}" class="btn btn-danger">Delete</a></span>
+        </span>
+        <span class="text-black-50">{{ staffuser.email }}</span>
+        <span> </span>
+      </div>
     </div>
     <div class="col-md-5 border-right">
       <div class="p-3 py-5">
@@ -36,7 +44,15 @@
           <div class="col-md-6"><label class="labels">Description</label><span class="form-control">{{ company.description }}</span></div>
           <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
         </div>
-        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Back to clientarea</button></div>
+        <div class="mt-5 text-center">
+          <button class="btn btn-primary profile-button" type="button" onclick="goBack()">Back to companies</button>
+        </div>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
       </div>
     </div>
     <div class="col-md-4">
