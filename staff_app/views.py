@@ -104,6 +104,11 @@ class DepartmentDetailView(DetailView):
         return self.object.get_absolute_url()
 
 
+class DepartmentListView(ListView):
+    model = Department
+    template_name = "staff_app/department-list.html"
+
+
 class StaffUserCreate(CreateView):
     model = StaffUser
     form_class = StaffUserCreateForm
