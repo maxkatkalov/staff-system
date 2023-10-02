@@ -8,6 +8,7 @@ from django.views.generic import (
     DeleteView,
     UpdateView,
 )
+from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -52,9 +53,15 @@ class CompanyUpdateView(UpdateView):
         return updated_company.get_absolute_url()
 
 
-class CompanyDetailView(DetailView):
+class CompanyDetailView(DetailView, MultipleObjectMixin):
     model = Company
     template_name = "staff_app/company-detail.html"
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        departments = self.object.departments.all()
+        context = super().get_context_data(object_list=departments, **kwargs)
+        return context
 
 
 class CompanyDeleteView(DeleteView):
