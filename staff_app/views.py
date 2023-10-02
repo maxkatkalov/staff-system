@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.http import HttpRequest
 from django.views.generic import (
@@ -79,6 +79,15 @@ class DepartmentCreateView(CreateView):
         # Set the 'company' field to the certain company where this view called
         form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
         return super().form_valid(form)
+
+
+class DepartmentUpdateView(UpdateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = "staff_app/department-update.html"
+
+    def get_object(self):
+        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
 
 
 class StaffUserCreate(CreateView):
