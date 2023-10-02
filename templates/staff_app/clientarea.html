@@ -15,9 +15,8 @@
 
 {% block content %}
   <body>
-
   <div class="table-title">
-    <h5><a href="{% url 'staff_app:company-create' %}">Create new company</a></h5>
+    <h5 class="create-company"><a class="create-link" href="{% url 'staff_app:company-create' %}">Create a new company</a></h5>
     <h3>Your Companies</h3>
   </div>
   <table class="table-fill">
@@ -30,13 +29,19 @@
     </thead>
     <tbody class="table-hover">
     {% for company in company_list %}
-    <tr>
-      <td class="text-left"><a href="{{ company.get_absolute_url }}">{{ company.name }}</a></td>
-      <td class="text-left">{{ company.created_at_staff }}</td>
-      <td class="text-left">{{ company.copmany_staff_size }}</td>
+      <tr>
+        <td class="text-left"><a class="company-link" href="{{ company.get_absolute_url }}">{{ company.name }}</a></td>
+        <td class="text-left">{{ company.created_at_staff }}</td>
+        <td class="text-left">{{ company.copmany_staff_size }}</td>
+      </tr>
     {% endfor %}
+    {% block pagination %}
+      {% include "includes/paginator.html" %}
+    {% endblock %}
     </tbody>
   </table>
   </body>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

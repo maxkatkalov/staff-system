@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.http import HttpRequest
 from django.views.generic import (
@@ -8,11 +8,16 @@ from django.views.generic import (
     DeleteView,
     UpdateView,
 )
+from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from staff_app.models import StaffUser, Company
-from .forms import CompanyForm, StaffUserCreateForm
+from staff_app.models import StaffUser, Company, Department
+from .forms import (
+    CompanyForm,
+    StaffUserCreateForm,
+    DepartmentForm
+)
 
 
 def index(request: HttpRequest):
@@ -48,9 +53,15 @@ class CompanyUpdateView(UpdateView):
         return updated_company.get_absolute_url()
 
 
-class CompanyDetailView(DetailView):
+class CompanyDetailView(DetailView, MultipleObjectMixin):
     model = Company
     template_name = "staff_app/company-detail.html"
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        departments = self.object.departments.all()
+        context = super().get_context_data(object_list=departments, **kwargs)
+        return context
 
 
 class CompanyDeleteView(DeleteView):
@@ -58,12 +69,53 @@ class CompanyDeleteView(DeleteView):
     success_url = reverse_lazy("staff_app:clientarea")
 
 
-class CompanyListView(ListView):
+class CompanyListView(LoginRequiredMixin, ListView):
     model = Company
     template_name = "staff_app/clientarea.html"
+    paginate_by = 5
 
     def get_queryset(self):
         return get_user_model().objects.get(pk=self.request.user.pk).companies.all()
+
+
+class DepartmentCreateView(CreateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = "staff_app/department-creation.html"
+
+    def form_valid(self, form):
+        # Set the 'company' field to the certain company where this view called
+        form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
+
+
+class DepartmentUpdateView(UpdateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = "staff_app/department-update.html"
+
+    def get_object(self):
+        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class DepartmentDetailView(DetailView):
+    model = Department
+    template_name = "staff_app/department-detail.html"
+
+    def get_object(self):
+        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class DepartmentListView(ListView):
+    model = Department
+    template_name = "staff_app/department-list.html"
+    paginate_by = 5
 
 
 class StaffUserCreate(CreateView):
