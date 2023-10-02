@@ -46,16 +46,15 @@ class Office(models.Model):
 
 class Department(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="department_owner"
-    )
     company = models.ForeignKey(
         Company,
         on_delete=models.CASCADE,
         related_name="departments"
     )
+    description = models.TextField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse("staff_app:department-detail", args=[self.pk])
 
     def __str__(self) -> str:
         return self.name
