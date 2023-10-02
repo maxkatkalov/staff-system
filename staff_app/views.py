@@ -69,9 +69,10 @@ class CompanyDeleteView(DeleteView):
     success_url = reverse_lazy("staff_app:clientarea")
 
 
-class CompanyListView(ListView):
+class CompanyListView(LoginRequiredMixin, ListView):
     model = Company
     template_name = "staff_app/clientarea.html"
+    paginate_by = 5
 
     def get_queryset(self):
         return get_user_model().objects.get(pk=self.request.user.pk).companies.all()
@@ -114,6 +115,7 @@ class DepartmentDetailView(DetailView):
 class DepartmentListView(ListView):
     model = Department
     template_name = "staff_app/department-list.html"
+    paginate_by = 5
 
 
 class StaffUserCreate(CreateView):
