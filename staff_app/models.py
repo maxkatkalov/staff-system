@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 
 class Company(models.Model):
@@ -54,7 +54,7 @@ class Department(models.Model):
     description = models.TextField(null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("staff_app:department-detail", args=[self.pk])
+        return reverse("staff_app:department-detail", args=[self.company.pk, self.pk])
 
     def __str__(self) -> str:
         return self.name
