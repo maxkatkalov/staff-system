@@ -1,7 +1,7 @@
 from datetime import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class Company(models.Model):
@@ -11,9 +11,9 @@ class Company(models.Model):
         ('101-500', '101-500'),
         ('501+', '501+'),
     )
-
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="companies", null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=63)
-    foundation_date = models.DateField()
+    foundation_date = models.DateField(null=True, blank=True)
     created_at_staff = models.DateField(auto_now_add=True)
     copmany_staff_size = models.CharField(
         max_length=10,
@@ -42,7 +42,7 @@ class Office(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(
-        "StaffUser",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="department_owner"
     )
@@ -82,7 +82,7 @@ class StaffUser(AbstractUser):
         related_name="position_employees"
     )
     reporting_to = models.ForeignKey(
-        "StaffUser",
+        settings.AUTH_USER_MODEL,
         related_name="reporters",
         null=True,
         on_delete=models.CASCADE
@@ -100,4 +100,3 @@ class StaffUser(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username}"
-

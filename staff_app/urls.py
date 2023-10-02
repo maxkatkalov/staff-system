@@ -1,11 +1,11 @@
 from django.urls import path, include
 
-from .views import index, clientarea, ProfileDetailView
+from .views import index, CompanyListView, ProfileDetailView
 
 app_name = "staff_app"
 
 clientarea_urlpatterns = [
-    path("", clientarea, name="clientarea"),
+    path("", CompanyListView.as_view(), name="clientarea"),
     path("<int:pk>/", ProfileDetailView.as_view(), name="client-detail")
 ]
 
