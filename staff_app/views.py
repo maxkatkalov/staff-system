@@ -89,6 +89,20 @@ class DepartmentUpdateView(UpdateView):
     def get_object(self):
         return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class DepartmentDetailView(DetailView):
+    model = Department
+    template_name = "staff_app/department-detail.html"
+
+    def get_object(self):
+        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
 
 class StaffUserCreate(CreateView):
     model = StaffUser
