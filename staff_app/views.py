@@ -172,11 +172,31 @@ class OfficeCreateView(CreateView):
         return self.form_invalid(form)
 
     def get_success_url(self):
-        return self.object.get_absolute_url()
+        return reverse_lazy("staff_app:office-detail", kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk})
+
+
+class OfficeUpdateView(UpdateView):
+    model = Office
+    fields = "__all__"
+    success_url = reverse_lazy("staff_app:clientarea")
+
+    def get_object(self):
+        return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
+
+    def get_success_url(self):
+        return reverse_lazy("staff_app:office-detail", kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk})
 
 
 class OfficeDetailView(DetailView):
     model = Office
+
+    def get_object(self):
+        return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
+
+
+class OfficeDeleteView(DeleteView):
+    model = Office
+    success_url = reverse_lazy("staff_app:clientarea")
 
     def get_object(self):
         return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
