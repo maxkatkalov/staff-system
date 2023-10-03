@@ -39,7 +39,6 @@ class CompanyCreateView(CreateView):
     success_url = reverse_lazy("staff_app:clientarea")
 
     def form_valid(self, form):
-        # Set the 'owner' field to the currently logged-in user's ID
         form.instance.owner_id = self.request.user.id
         return super().form_valid(form)
 
@@ -90,7 +89,6 @@ class DepartmentCreateView(CreateView):
     template_name = "staff_app/department-creation.html"
 
     def form_valid(self, form):
-        # Set the 'company' field to the certain company where this view called
         form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
         return super().form_valid(form)
 
@@ -166,10 +164,31 @@ class PositionDetailView(DetailView, MultipleObjectMixin):
         )
 
 
+class PositionListView(ListView):
+    model = Position
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Department.objects.get(pk=self.kwargs["id"]).positions.all()
+
+
 class PositionUpdateView(UpdateView):
     model = Position
     fields = ("name", "description")
     template_name = "staff_app/position-creation.html"
+
+    def get_object(self):
+        return get_object_or_404(
+            Position,
+            pk=self.kwargs["position_id"],
+            company_id=self.kwargs["pk"],
+            department=Department.objects.get(pk=self.kwargs["id"]),
+        )
+
+
+class PositionDeleteView(DeleteView):
+    model = Position
+    success_url = reverse_lazy("staff_app:clientarea")
 
     def get_object(self):
         return get_object_or_404(

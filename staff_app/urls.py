@@ -16,6 +16,8 @@ from .views import (
     PositionCreateView,
     PositionDetailView,
     PositionUpdateView,
+    PositionDeleteView,
+    PositionListView,
 )
 
 app_name = "staff_app"
@@ -51,6 +53,11 @@ clientarea_urlpatterns = [
         name="department-update",
     ),
     path(
+        "company-detail/<int:pk>/departments/<int:id>/positions/",
+        PositionListView.as_view(),
+        name="position-list",
+    ),
+    path(
         "company-detail/<int:pk>/departments/<int:id>/positions/create/",
         PositionCreateView.as_view(),
         name="position-create",
@@ -64,6 +71,11 @@ clientarea_urlpatterns = [
         "company-detail/<int:pk>/departments/<int:id>/positions/<int:position_id>/update/",
         PositionUpdateView.as_view(),
         name="position-update",
+    ),
+    path(
+        "company-detail/<int:pk>/departments/<int:id>/positions/<int:position_id>/delete/",
+        PositionDeleteView.as_view(),
+        name="position-delete",
     ),
     path(
         "company-detail/<int:pk>/create-staff/",
