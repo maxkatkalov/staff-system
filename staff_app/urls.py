@@ -16,6 +16,7 @@ from .views import (
     PositionCreateView,
     PositionDetailView,
     PositionUpdateView,
+    OfficeDetailView,
 )
 
 app_name = "staff_app"
@@ -30,6 +31,7 @@ clientarea_urlpatterns = [
         CompanyDetailView.as_view(),
         name="company-detail",
     ),
+    path("clientarea/company-detail/<int:pk>/offices/<int:office_id>/", OfficeDetailView.as_view(), name="office-detail"),
     path(
         "company-detail/<int:pk>/departments/create",
         DepartmentCreateView.as_view(),
