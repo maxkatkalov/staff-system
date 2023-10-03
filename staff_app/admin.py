@@ -1,11 +1,5 @@
 from django.contrib import admin
-from .models import (
-    Company,
-    Office,
-    Department,
-    Position,
-    StaffUser
-)
+from .models import Company, Office, Department, Position, StaffUser
 
 admin.site.register(Company)
 admin.site.register(Office)
