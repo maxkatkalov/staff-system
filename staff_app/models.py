@@ -7,22 +7,19 @@ from django.urls import reverse, reverse_lazy
 
 class Company(models.Model):
     COMPANY_STAFF_SIZE_CHOICES = (
-        ("1-50", "1-50"),
-        ("51-100", "51-100"),
-        ("101-500", "101-500"),
-        ("501+", "501+"),
+        ('1-50', '1-50'),
+        ('51-100', '51-100'),
+        ('101-500', '101-500'),
+        ('501+', '501+'),
     )
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name="companies",
-        null=True,
-        on_delete=models.CASCADE,
-    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="companies", null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=63)
     foundation_date = models.DateField(null=True, blank=True)
     created_at_staff = models.DateField(auto_now_add=True)
     copmany_staff_size = models.CharField(
-        max_length=10, choices=COMPANY_STAFF_SIZE_CHOICES, default="1-50"
+        max_length=10,
+        choices=COMPANY_STAFF_SIZE_CHOICES,
+        default='1-50'
     )
     description = models.TextField(null=True, blank=True)
     country_registry = models.CharField(max_length=255, null=True, blank=True)
@@ -36,7 +33,7 @@ class Company(models.Model):
 
 class Office(models.Model):
     name = models.CharField(max_length=63)
-    # TODO: add choices for this fields
+    #TODO: add choices for this fields
     city = models.CharField(max_length=110)
     country = models.CharField(max_length=110)
     address = models.CharField(max_length=255)
@@ -50,29 +47,26 @@ class Office(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=255)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="departments"
+        Company,
+        on_delete=models.CASCADE,
+        related_name="departments"
     )
     description = models.TextField(null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse(
-            "staff_app:department-detail", args=[self.company.pk, self.pk]
-        )
+        return reverse("staff_app:department-detail", args=[self.company.pk, self.pk])
 
     def __str__(self) -> str:
         return self.name
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=156, unique=True)
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="positions"
+    name = models.CharField(
+        max_length=156,
+        unique=True,
+        default=f"Unnamed position {datetime.now()}"
     )
     department = models.ManyToManyField(Department, related_name="positions")
-    description = models.TextField(null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
 
 
 class StaffUser(AbstractUser):

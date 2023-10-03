@@ -7,13 +7,7 @@ from .models import Company, StaffUser, Department
 class CompanyForm(ModelForm):
     class Meta:
         model = Company
-        fields = (
-            "name",
-            "foundation_date",
-            "copmany_staff_size",
-            "description",
-            "country_registry",
-        )
+        fields = ("name", "foundation_date", "copmany_staff_size", "description", "country_registry")
 
 
 class StaffUserCreateForm(UserCreationForm):
@@ -29,3 +23,4 @@ class DepartmentForm(ModelForm):
     class Meta:
         model = Department
         fields = ("name", "description")
+

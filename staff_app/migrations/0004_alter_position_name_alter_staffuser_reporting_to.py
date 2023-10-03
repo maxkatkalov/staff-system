@@ -7,10 +7,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
     dependencies = [
-        (
-            "staff_app",
-            "0003_alter_position_name_alter_staffuser_fire_date_and_more",
-        ),
+        ("staff_app", "0003_alter_position_name_alter_staffuser_fire_date_and_more"),
     ]
 
     operations = [
