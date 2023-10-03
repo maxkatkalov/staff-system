@@ -1,3 +1,6 @@
+import datetime
+from datetime import timedelta
+
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.http import HttpRequest
@@ -83,9 +86,22 @@ class CompanyListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["test"] = {15: 25}
-        companies = StaffUser.objects.get(pk=self.request.user.pk).companies.all()
-        context["departments_count"] = {company.pk: company.departments.count() for company in companies}
+        companies = StaffUser.objects.get(
+                pk=self.request.user.pk
+            ).companies.all()
+        context["departments_count"] = {
+            company.pk: company.departments.count()
+            for company in companies
+        }
+        context["offices_count"] = {
+            company.pk: company.company_offices.count()
+            for company in companies
+        }
+        context["company_exists"] = {
+            company.pk: (datetime.date.today() - company.created_at_staff).days + 1
+            for company in companies
+        }
+        context["total_companies"] = len(companies)
         return context
 
 

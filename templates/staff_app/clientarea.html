@@ -24,12 +24,24 @@
   {% include 'includes/header.html' %}
 {% endblock %}
 
+  <main>
+    <span><p>Companies</p></span>
+  </main>
+
 {% block content %}
   {% if object_list %}
+
     <body>
     <section>
       <div class="container">
+        <h4 class="text-center">Total companies {{ total_companies }}</h4>
+        {% block pagination %}
+          <div class="text-center">
+            {% include "includes/paginator.html" %}
+          </div>
+        {% endblock %}
         <div class="row">
+
           {% for company in companies_list %}
             <div class="col-sm-4">
               <div class="card text-center">
@@ -42,10 +54,10 @@
                 </div>
                 <div class="option">
                   <ul>
-                    <li> <i class="fa fa-check" aria-hidden="true"></i> {{ departments_count|get_value_from_dict:company.pk }} </li>
-                    <li> <i class="fa fa-check" aria-hidden="true"></i> 3 Domain Names </li>
-                    <li> <i class="fa fa-check" aria-hidden="true"></i> 20 Email Address </li>
-                    <li> <i class="fa fa-times" aria-hidden="true"></i> Live Support </li>
+                    <li> <i class="fa fa-bars" aria-hidden="true"></i> Departments: {{ departments_count|get_value_from_dict:company.pk }} </li>
+                    <li> <i class="fa fa-university" aria-hidden="true"></i> Offices: {{ offices_count|get_value_from_dict:company.pk }} </li>
+                    <li> <i class="fa fa-users" aria-hidden="true"></i> Staff: {{ company.copmany_staff_size }} </li>
+                    <li> <i class="fa fa-calendar" aria-hidden="true"></i> Exists: {{ company_exists|get_value_from_dict:company.pk }} day{{ company_exists|get_value_from_dict:company.pk|pluralize }} </li>
                   </ul>
                 </div>
                 <a href="{{ company.get_absolute_url }}">Details</a>
@@ -59,18 +71,11 @@
   {% endif %}
 
 
-    {% block pagination %}
-      {% include "includes/paginator.html" %}
-    {% endblock %}
-    </tbody>
+  </tbody>
   </table>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-{% endblock %}
-
-{% block footer %}
-  {% include 'includes/header.html' %}
 {% endblock %}
 </html>
