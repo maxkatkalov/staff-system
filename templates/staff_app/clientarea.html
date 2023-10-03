@@ -1,8 +1,19 @@
 {% load static %}
+{% load get_value_from_dict %}
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8">
+    <title>Pricing Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
   <link rel="stylesheet" href="{% static 'css/clientarea_company_objects.css' %}">
   <meta charset="utf-8" />
   <title>Table Style</title>
@@ -14,27 +25,40 @@
 {% endblock %}
 
 {% block content %}
-  <body>
-  <div class="table-title">
-    <h5 class="create-company"><a class="create-link" href="{% url 'staff_app:company-create' %}">Create a new company</a></h5>
-    <h3>Your Companies</h3>
-  </div>
-  <table class="table-fill">
-    <thead>
-    <tr>
-      <th class="text-left">Company name</th>
-      <th class="text-left">Created at</th>
-      <th class="text-left">Staff size</th>
-    </tr>
-    </thead>
-    <tbody class="table-hover">
-    {% for company in company_list %}
-      <tr>
-        <td class="text-left"><a class="company-link" href="{{ company.get_absolute_url }}">{{ company.name }}</a></td>
-        <td class="text-left">{{ company.created_at_staff }}</td>
-        <td class="text-left">{{ company.copmany_staff_size }}</td>
-      </tr>
-    {% endfor %}
+  {% if object_list %}
+    <body>
+    <section>
+      <div class="container">
+        <div class="row">
+          {% for company in companies_list %}
+            <div class="col-sm-4">
+              <div class="card text-center">
+                <div class="title">
+                  <img src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" alt="My Linked Image" class="fa">
+                  <h2>{{ company.name }}</h2>
+                </div>
+                <div class="price">
+                  <h3><sup>Created:</sup>{{ company.created_at_staff }}</h3>
+                </div>
+                <div class="option">
+                  <ul>
+                    <li> <i class="fa fa-check" aria-hidden="true"></i> {{ departments_count|get_value_from_dict:company.pk }} </li>
+                    <li> <i class="fa fa-check" aria-hidden="true"></i> 3 Domain Names </li>
+                    <li> <i class="fa fa-check" aria-hidden="true"></i> 20 Email Address </li>
+                    <li> <i class="fa fa-times" aria-hidden="true"></i> Live Support </li>
+                  </ul>
+                </div>
+                <a href="{{ company.get_absolute_url }}">Details</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    </body>
+  {% endif %}
+
+
     {% block pagination %}
       {% include "includes/paginator.html" %}
     {% endblock %}
@@ -45,3 +69,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
+
+{% block footer %}
+  {% include 'includes/header.html' %}
+{% endblock %}
+</html>

@@ -75,10 +75,18 @@ class CompanyDeleteView(DeleteView):
 class CompanyListView(LoginRequiredMixin, ListView):
     model = Company
     template_name = "staff_app/clientarea.html"
-    paginate_by = 5
+    context_object_name = "companies_list"
+    paginate_by = 3
 
     def get_queryset(self):
         return get_user_model().objects.get(pk=self.request.user.pk).companies.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["test"] = {15: 25}
+        companies = StaffUser.objects.get(pk=self.request.user.pk).companies.all()
+        context["departments_count"] = {company.pk: company.departments.count() for company in companies}
+        return context
 
 
 class DepartmentCreateView(CreateView):
