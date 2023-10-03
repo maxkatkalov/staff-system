@@ -39,6 +39,8 @@ class Office(models.Model):
     address = models.CharField(max_length=255)
     workspaces = models.IntegerField()
     description = models.TextField()
+    department = models.ManyToManyField(Company, related_name="department_offices")
+    company = models.ManyToManyField(Company, related_name="company_comoffices")
 
     def __str__(self) -> str:
         return f"{self.name}, {self.city}"
