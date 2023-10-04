@@ -35,7 +35,7 @@
           <h4 class="text-right">{{ company.name }}</h4>
         </div>
         <div class="row mt-2">
-          <form method="post" novalidate>
+          <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {{ form|crispy }}
             <div class="mt-5 text-center">

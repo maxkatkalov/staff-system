@@ -21,8 +21,9 @@
   <div class="row">
     <div class="col-md-3 border-right">
       <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-        <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-        <span class="font-weight-bold">
+
+          <img class="rounded-circle mt-5" width="150px" {% if company.logo %} src="{{ company.logo.url }}" {% else %} src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="{{ company.name }} Logo" {% endif %}>
+                <span class="font-weight-bold">
           <a href="{% url 'staff_app:company-update' company.pk %}" class="btn btn-primary">Update</a>
           <span><a href="{% url 'staff_app:company-delete' company.pk %}" class="btn btn-danger">Delete</a></span>
         </span>
@@ -40,10 +41,10 @@
           <div class="col-md-6"><label class="labels">Staff size</label><span class="form-control">{{ company.copmany_staff_size }}</span></div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-12"><label class="labels">Country</label><span class="form-control">{{ company.country }}</span></div>
+          <div class="col-md-12"><label class="labels">Country</label><span class="form-control">{{ company.country_registry }}</span></div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-6"><label class="labels">Description</label><span class="form-control">{{ company.description }}</span></div>
+          <div class="col-md-6"><label class="labels">Foundation date</label><span class="form-control">{{ company.foundation_date }}</span></div>
           <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
         </div>
         <div class="mt-5 text-center">
@@ -53,10 +54,17 @@
     </div>
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div class="col-md-12"><label class="labels">Department list:</label></div>
+        <div class="col-md-12"><label class="labels">Departments list:</label></div>
+        <div class="col-md-12"><label class="labels"><a href="" class="text-center">See all</a></label></div>
         {% for department in object_list %}
         <div class="col-md-12"><span class="form-control">{{ department.name }}</span></div><br>
         {% endfor %}
+        {% block pagination %}
+        <div class="text-center">
+          {% include "includes/paginator.html" %}
+        </div>
+        {% endblock %}
+        <a href="" class="text-right">See offices</a>
       </div>
     </div>
   </div>

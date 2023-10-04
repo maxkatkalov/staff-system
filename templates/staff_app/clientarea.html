@@ -46,7 +46,7 @@
             <div class="col-sm-4">
               <div class="card text-center">
                 <div class="title">
-                  <img src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" alt="My Linked Image" class="fa">
+                  <img {% if company.logo %} src="{{ company.logo.url }}" alt="My Linked Image" class="fa" {% else %} src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" alt="My Linked Image" class="fa" {% endif %}>
                   <h2>{{ company.name }}</h2>
                 </div>
                 <div class="price">

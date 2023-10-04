@@ -13,6 +13,7 @@ class CompanyForm(ModelForm):
             "copmany_staff_size",
             "description",
             "country_registry",
+            "logo"
         )
 
 

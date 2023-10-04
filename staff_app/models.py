@@ -2,7 +2,8 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
+from django.conf import settings
 
 
 class Company(models.Model):
@@ -23,6 +24,7 @@ class Company(models.Model):
     )
     description = models.TextField(null=True, blank=True)
     country_registry = models.CharField(max_length=255, null=True, blank=True)
+    logo = models.ImageField(upload_to="images/company/logos", null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("staff_app:company-detail", args=[self.pk])
