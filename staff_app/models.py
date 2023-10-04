@@ -80,38 +80,7 @@ class Position(models.Model):
 
 
 class StaffUser(AbstractUser):
-    # owner = models.BooleanField(default=False)
-    # company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="staff_users")
-    # department = models.ForeignKey(
-    #     Department,
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    #     related_name="members"
-    # )
-    # position = models.ForeignKey(
-    #     Position,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     related_name="position_employees"
-    # )
-    # reporting_to = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     related_name="reporters",
-    #     null=True,
-    #     on_delete=models.CASCADE
-    # )
-    # salary = models.IntegerField(null=True)
-    # office = models.ForeignKey(
-    #     Office,
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL
-    # )
-    # fire_date = models.DateField(default=None, null=True)
-    # retirement_date = models.DateField(default=None, null=True)
-    # last_salary_review = models.DateField(default=None, null=True)
+    logo = models.ImageField(upload_to="images/profile/logos", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.username}"
