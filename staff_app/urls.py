@@ -20,6 +20,10 @@ from .views import (
     OfficeCreateView,
     OfficeDeleteView,
     OfficeUpdateView,
+    StaffUsernameUpdate,
+    StaffNameSurnameUpdate,
+    StaffEmailUpdateView,
+    StaffLogoUpdateView,
 )
 
 app_name = "staff_app"
@@ -89,6 +93,10 @@ clientarea_urlpatterns = [
         name="company-update",
     ),
     path("<int:pk>/", ProfileDetailView.as_view(), name="client-detail"),
+    path("<int:pk>/update-username/", StaffUsernameUpdate.as_view(), name="client-update-username"),
+    path("<int:pk>/update-name-surname/", StaffNameSurnameUpdate.as_view(), name="client-update-name-surname"),
+    path("<int:pk>/email-update/", StaffEmailUpdateView.as_view(), name="email-update"),
+    path("<int:pk>/logo-update/", StaffLogoUpdateView.as_view(), name="logo-update"),
 ]
 
 urlpatterns = [

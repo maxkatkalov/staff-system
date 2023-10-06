@@ -84,3 +84,6 @@ class StaffUser(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username}"
+
+    def get_absolute_url(self):
+        return reverse("staff_app:client-detail", args=[self.pk])

@@ -23,7 +23,15 @@ from staff_app.models import (
     Office,
 )
 
-from staff_app.forms import CompanyForm, StaffUserCreateForm, DepartmentForm
+from staff_app.forms import (
+    CompanyForm,
+    StaffCreateForm,
+    DepartmentForm,
+    StaffUsernameUpdateForm,
+    StaffNameSurnameUpdateForm,
+    StaffEmailUpdateForm,
+    StaffLogoUpdateForm,
+)
 
 
 def index(request: HttpRequest):
@@ -34,6 +42,11 @@ class ProfileDetailView(DetailView):
     model = StaffUser
     context_object_name = "staffuser"
     template_name = "staff_app/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_companies"] = self.request.user.companies.order_by("-created_at_staff")[:5]
+        return context
 
 
 class CompanyCreateView(CreateView):
@@ -54,9 +67,7 @@ class CompanyUpdateView(UpdateView):
     template_name = "staff_app/company-update.html"
 
     def get_success_url(self):
-        updated_company = self.object
-
-        return updated_company.get_absolute_url()
+         return self.object.get_absolute_url()
 
 
 class CompanyDetailView(DetailView, MultipleObjectMixin):
@@ -227,6 +238,43 @@ class OfficeDeleteView(DeleteView):
 
 class StaffUserCreate(CreateView):
     model = StaffUser
-    form_class = StaffUserCreateForm
-    template_name = "staff_app/client-create.html"
-    success_url = reverse_lazy("staff_app:clientarea")
+    form_class = StaffCreateForm
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class StaffUsernameUpdate(UpdateView):
+    model = StaffUser
+    form_class = StaffUsernameUpdateForm
+    template_name = "staff_app/staffuser_update_forms/username-update.html"
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class StaffNameSurnameUpdate(UpdateView):
+    model = StaffUser
+    form_class = StaffNameSurnameUpdateForm
+    template_name = "staff_app/staffuser_update_forms/name-surname.html"
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class StaffEmailUpdateView(UpdateView):
+    model = StaffUser
+    form_class = StaffEmailUpdateForm
+    template_name = "staff_app/staffuser_update_forms/email.html"
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class StaffLogoUpdateView(UpdateView):
+    model = StaffUser
+    form_class = StaffLogoUpdateForm
+    template_name = "staff_app/staffuser_update_forms/logo.html"
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
