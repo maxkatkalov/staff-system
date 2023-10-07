@@ -142,7 +142,7 @@ class DepartmentUpdateView(UpdateView):
 
 class DepartmentDetailView(DetailView):
     model = Department
-    template_name = "staff_app/department-detail.html"
+    context_object_name = "department"
 
     def get_object(self):
         return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])

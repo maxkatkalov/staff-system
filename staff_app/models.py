@@ -59,6 +59,7 @@ class Department(models.Model):
         related_name="departments"
     )
     description = models.TextField(null=True, blank=True)
+    created_at_staff = models.DateField(auto_now_add=True)
 
     def get_absolute_url(self):
         return reverse("staff_app:department-detail", args=[self.company.pk, self.pk])
