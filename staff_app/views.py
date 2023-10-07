@@ -73,10 +73,12 @@ class CompanyUpdateView(UpdateView):
 class CompanyDetailView(DetailView, MultipleObjectMixin):
     model = Company
     template_name = "staff_app/company-detail.html"
-    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(object_list=self.object.departments.all(), **kwargs)
+        context["offices_count"] = self.object.company_offices.count()
+        context["departments"] = self.object.departments.all()[:5]
+        context["total_departments"] = self.object.departments.count()
         return context
 
 
