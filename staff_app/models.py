@@ -40,7 +40,12 @@ class Office(models.Model):
     address = models.CharField(max_length=255)
     workspaces = models.IntegerField()
     description = models.TextField()
-    company = models.ManyToManyField(Company, related_name="company_offices")
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE,
+        related_name="company_offices"
+    )
+    opened = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}, {self.city}"

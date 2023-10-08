@@ -221,13 +221,8 @@ class OfficeCreateView(CreateView):
     fields = ["name", "city", "country", "address", "workspaces", "description"]
 
     def form_valid(self, form):
-        if form.is_valid():
-            form.save()
-            form.instance.company.add(Company.objects.get(pk=self.kwargs["pk"]))
-            if self.kwargs.get("id"):
-                Department.objects.get(pk=self.kwargs["id"]).department_offices.add(self.object)
-            return super().form_valid(form)
-        return self.form_invalid(form)
+        form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("staff_app:office-detail", kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk})
@@ -235,7 +230,7 @@ class OfficeCreateView(CreateView):
 
 class OfficeUpdateView(UpdateView):
     model = Office
-    fields = "__all__"
+    fields = ["name", "city", "country", "address", "workspaces", "description", "company"]
     success_url = reverse_lazy("staff_app:clientarea")
 
     def get_object(self):
