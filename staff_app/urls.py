@@ -26,6 +26,7 @@ from .views import (
     StaffLogoUpdateView,
     DepartmentDeleteView,
     PositionDeleteView,
+    DepartmentListView,
 )
 
 app_name = "staff_app"

@@ -10,6 +10,7 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     UpdateView,
+    ListView,
 )
 from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth import get_user_model
@@ -157,8 +158,16 @@ class DepartmentDetailView(DetailView):
 
 class DepartmentListView(ListView):
     model = Department
-    template_name = "staff_app/department-list.html"
-    paginate_by = 5
+    paginate_by = 3
+
+    def get_queryset(self):
+        return self.model.objects.filter(company__pk=self.kwargs["pk"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["company"] = Company.objects.get(pk=self.kwargs["pk"])
+        context["total_departments"] = context["company"].departments.count()
+        return context
 
 
 class PositionCreateView(CreateView):
