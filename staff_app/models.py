@@ -35,13 +35,11 @@ class Company(models.Model):
 
 class Office(models.Model):
     name = models.CharField(max_length=63)
-    #TODO: add choices for this fields
     city = models.CharField(max_length=110)
     country = models.CharField(max_length=110)
     address = models.CharField(max_length=255)
     workspaces = models.IntegerField()
     description = models.TextField()
-    department = models.ManyToManyField("Department", related_name="department_offices")
     company = models.ManyToManyField(Company, related_name="company_offices")
 
     def __str__(self) -> str:
@@ -73,11 +71,22 @@ class Position(models.Model):
         max_length=156,
         unique=True,
     )
-    department = models.ManyToManyField(Department, related_name="positions")
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(null=True, blank=True)
+    created_at_staff = models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+                "staff_app:position-detail",
+                kwargs={
+                    "position_id": self.pk,
+                    "pk": self.department.company.pk,
+                    "id": self.department.pk
+                },
+        )
 
 
 class StaffUser(AbstractUser):

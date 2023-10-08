@@ -56,7 +56,6 @@ class CompanyCreateView(CreateView):
     success_url = reverse_lazy("staff_app:clientarea")
 
     def form_valid(self, form):
-        # Set the 'owner' field to the currently logged-in user's ID
         form.instance.owner_id = self.request.user.id
         return super().form_valid(form)
 
@@ -165,38 +164,56 @@ class DepartmentListView(ListView):
 class PositionCreateView(CreateView):
     model = Position
     fields = ("name", "description")
-    template_name = "staff_app/position-creation.html"
 
     def form_valid(self, form):
-        if form.is_valid():
-            self.object = form.save()
-            Company.objects.get(
-                pk=self.args["pk"]
-            ).departments.get(
-                pk=self.args["id"]
-            ).positions.add(
-                Position.objects.get(pk=self.object.pk)
-            )
-            return super().form_valid(form)
-        return self.form_invalid(form)
+        form.instance.department = Company.objects.get(
+            pk=self.kwargs["pk"]
+        ).departments.get(pk=self.kwargs["id"])
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
-class PositionDetailView(DetailView, MultipleObjectMixin):
+class PositionDetailView(DetailView):
     model = Position
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        departments = self.object.departments.all()
-        context = super().get_context_data(object_list=departments, **kwargs)
-        return context
 
     def get_object(self):
-        return get_object_or_404(Position, pk=self.kwargs["position_id"], company_id=self.kwargs["pk"], department=Department.objects.get(pk=self.kwargs["id"]))
+        return get_object_or_404(
+            Position,
+            pk=self.kwargs["position_id"],
+        )
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
 class PositionUpdateView(UpdateView):
     model = Position
     fields = ("name", "description")
+
+    def get_object(self):
+        return get_object_or_404(
+            Position,
+            pk=self.kwargs["position_id"],
+        )
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class PositionDeleteView(DeleteView):
+    model = Position
+
+    def get_object(self):
+        return get_object_or_404(
+            Position,
+            pk=self.kwargs["position_id"],
+        )
+
+    def get_success_url(self):
+        return self.object.department.get_absolute_url()
 
 
 class OfficeCreateView(CreateView):
