@@ -120,18 +120,23 @@ class CompanyListView(LoginRequiredMixin, ListView):
 class DepartmentCreateView(CreateView):
     model = Department
     form_class = DepartmentForm
-    template_name = "staff_app/department-creation.html"
 
     def form_valid(self, form):
-        # Set the 'company' field to the certain company where this view called
         form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
         return super().form_valid(form)
+
+
+class DepartmentDeleteView(DeleteView):
+    model = Department
+    success_url = reverse_lazy("staff_app:department-list")
+
+    def get_object(self):
+        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
 
 
 class DepartmentUpdateView(UpdateView):
     model = Department
     form_class = DepartmentForm
-    template_name = "staff_app/department-update.html"
 
     def get_object(self):
         return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])

@@ -24,6 +24,7 @@ from .views import (
     StaffNameSurnameUpdate,
     StaffEmailUpdateView,
     StaffLogoUpdateView,
+    DepartmentDeleteView,
 )
 
 app_name = "staff_app"
@@ -46,6 +47,11 @@ clientarea_urlpatterns = [
         "company-detail/<int:pk>/departments/create",
         DepartmentCreateView.as_view(),
         name="department-create",
+    ),
+    path(
+        "company-detail/<int:pk>/departments/<int:id>/delete",
+        DepartmentDeleteView.as_view(),
+        name="department-delete",
     ),
     path(
         "company-detail/<int:pk>/departments/",

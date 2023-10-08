@@ -24,8 +24,8 @@
 
         <img class="rounded-circle mt-5" width="150px" src="https://images.pexels.com/photos/5602166/pexels-photo-5602166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="{{ department.name }} Logo">
         <span class="font-weight-bold">
-          <a href="" class="btn btn-primary">Update</a>
-          <span><a href="" class="btn btn-danger">Delete</a></span>
+          <a href="{% url 'staff_app:department-update' id=department.pk pk=department.company.pk %}" class="btn btn-primary">Update</a>
+          <span><a href="{% url 'staff_app:department-delete' id=department.pk pk=department.company.pk %}" class="btn btn-danger">Delete</a></span>
         </span>
         <span> </span>
       </div>
@@ -50,11 +50,13 @@
         </div>
       </div>
     </div>
+    {% block delete %}
     <div class="col-md-4">
       <div class="p-3 py-5">
         <div><a href="{% url 'staff_app:department-create' pk=department.pk %}" class="btn btn-primary">Create department</a> <a href="" class="text-center">See all</a></div>
       </div>
     </div>
+    {% endblock %}
   </div>
 </div>
 </div>
