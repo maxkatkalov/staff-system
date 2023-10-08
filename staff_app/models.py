@@ -50,9 +50,6 @@ class Office(models.Model):
     def __str__(self) -> str:
         return f"{self.name}, {self.city}"
 
-    def get_absolute_url(self):
-        return reverse("staff_app:office-detail", kwargs={"office_id": self.pk})
-
 
 class Department(models.Model):
     name = models.CharField(max_length=255)

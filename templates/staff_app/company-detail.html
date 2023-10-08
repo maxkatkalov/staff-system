@@ -72,7 +72,7 @@
         {% endblock %}
         <div><a href="{% url 'staff_app:department-create' pk=company.pk %}" class="btn btn-primary">Create department</a> <a href="{% url 'staff_app:department-list' pk=company.pk %}" class="text-center">See all</a></div>
         <br>
-        <div><a href="{% url 'staff_app:office-create' pk=company.pk %}" class="btn btn-primary">Create office</a>  <a href="" class="text-right">See offices</a></div>
+        <div><a href="{% url 'staff_app:office-create' pk=company.pk %}" class="btn btn-primary">Create office</a>  <a href="{% url 'staff_app:office-list' pk=company.pk %}" class="text-right">See offices</a></div>
 
       </div>
     </div>

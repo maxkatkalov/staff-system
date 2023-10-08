@@ -27,6 +27,7 @@ from .views import (
     DepartmentDeleteView,
     PositionDeleteView,
     DepartmentListView,
+    OfficeListView
 )
 
 app_name = "staff_app"
@@ -41,6 +42,7 @@ clientarea_urlpatterns = [
         CompanyDetailView.as_view(),
         name="company-detail",
     ),
+    path("company-detail/<int:pk>/offices/", OfficeListView.as_view(), name="office-list"),
     path("company-detail/<int:pk>/offices/create/", OfficeCreateView.as_view(), name="office-create"),
     path("company-detail/<int:pk>/offices/<int:office_id>/", OfficeDetailView.as_view(), name="office-detail"),
     path("company-detail/<int:pk>/offices/<int:office_id>/delete/", OfficeDeleteView.as_view(), name="office-delete"),
