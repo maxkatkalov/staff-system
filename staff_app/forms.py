@@ -24,7 +24,7 @@ class CompanyForm(ModelForm):
             "copmany_staff_size",
             "description",
             "country_registry",
-            "logo"
+            "logo",
         )
 
 
@@ -43,13 +43,13 @@ class StaffNameSurnameUpdateForm(ModelForm):
 class StaffEmailUpdateForm(ModelForm):
     class Meta:
         model = StaffUser
-        fields = ("email", )
+        fields = ("email",)
 
 
 class StaffLogoUpdateForm(ModelForm):
     class Meta:
         model = StaffUser
-        fields = ("logo", )
+        fields = ("logo",)
 
 
 class DepartmentForm(ModelForm):

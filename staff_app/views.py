@@ -1,5 +1,4 @@
 import datetime
-from datetime import timedelta
 
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -46,7 +45,9 @@ class ProfileDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user_companies"] = self.request.user.companies.order_by("-created_at_staff")[:5]
+        context["user_companies"] = self.request.user.companies.order_by(
+            "-created_at_staff"
+        )[:5]
         return context
 
 
@@ -67,7 +68,7 @@ class CompanyUpdateView(UpdateView):
     template_name = "staff_app/company-update.html"
 
     def get_success_url(self):
-         return self.object.get_absolute_url()
+        return self.object.get_absolute_url()
 
 
 class CompanyDetailView(DetailView, MultipleObjectMixin):
@@ -75,7 +76,9 @@ class CompanyDetailView(DetailView, MultipleObjectMixin):
     template_name = "staff_app/company-detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(object_list=self.object.departments.all(), **kwargs)
+        context = super().get_context_data(
+            object_list=self.object.departments.all(), **kwargs
+        )
         context["offices_count"] = self.object.company_offices.count()
         context["departments"] = self.object.departments.all()[:5]
         context["total_departments"] = self.object.departments.count()
@@ -94,23 +97,27 @@ class CompanyListView(LoginRequiredMixin, ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return get_user_model().objects.get(pk=self.request.user.pk).companies.all()
+        return (
+            get_user_model()
+            .objects.get(pk=self.request.user.pk)
+            .companies.all()
+        )
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         companies = StaffUser.objects.get(
-                pk=self.request.user.pk
-            ).companies.all()
+            pk=self.request.user.pk
+        ).companies.all()
         context["departments_count"] = {
-            company.pk: company.departments.count()
-            for company in companies
+            company.pk: company.departments.count() for company in companies
         }
         context["offices_count"] = {
             company.pk: company.company_offices.count()
             for company in companies
         }
         context["company_exists"] = {
-            company.pk: (datetime.date.today() - company.created_at_staff).days + 1
+            company.pk: (datetime.date.today() - company.created_at_staff).days
+            + 1
             for company in companies
         }
         context["total_companies"] = len(companies)
@@ -131,7 +138,9 @@ class DepartmentDeleteView(DeleteView):
     success_url = reverse_lazy("staff_app:department-list")
 
     def get_object(self):
-        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+        return get_object_or_404(
+            Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"]
+        )
 
 
 class DepartmentUpdateView(UpdateView):
@@ -139,7 +148,9 @@ class DepartmentUpdateView(UpdateView):
     form_class = DepartmentForm
 
     def get_object(self):
-        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+        return get_object_or_404(
+            Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"]
+        )
 
     def get_success_url(self):
         return self.object.get_absolute_url()
@@ -150,7 +161,9 @@ class DepartmentDetailView(DetailView):
     context_object_name = "department"
 
     def get_object(self):
-        return get_object_or_404(Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"])
+        return get_object_or_404(
+            Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"]
+        )
 
     def get_success_url(self):
         return self.object.get_absolute_url()
@@ -227,33 +240,58 @@ class PositionDeleteView(DeleteView):
 
 class OfficeCreateView(CreateView):
     model = Office
-    fields = ["name", "city", "country", "address", "workspaces", "description"]
+    fields = [
+        "name",
+        "city",
+        "country",
+        "address",
+        "workspaces",
+        "description",
+    ]
 
     def form_valid(self, form):
         form.instance.company = Company.objects.get(pk=self.kwargs["pk"])
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("staff_app:office-detail", kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk})
+        return reverse_lazy(
+            "staff_app:office-detail",
+            kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk},
+        )
 
 
 class OfficeUpdateView(UpdateView):
     model = Office
-    fields = ["name", "city", "country", "address", "workspaces", "description", "company"]
+    fields = [
+        "name",
+        "city",
+        "country",
+        "address",
+        "workspaces",
+        "description",
+        "company",
+    ]
     success_url = reverse_lazy("staff_app:clientarea")
 
     def get_object(self):
-        return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
+        return get_object_or_404(
+            self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"]
+        )
 
     def get_success_url(self):
-        return reverse_lazy("staff_app:office-detail", kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk})
+        return reverse_lazy(
+            "staff_app:office-detail",
+            kwargs={"pk": self.kwargs["pk"], "office_id": self.object.pk},
+        )
 
 
 class OfficeDetailView(DetailView):
     model = Office
 
     def get_object(self):
-        return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
+        return get_object_or_404(
+            self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"]
+        )
 
 
 class OfficeListView(ListView):
@@ -275,7 +313,9 @@ class OfficeDeleteView(DeleteView):
     success_url = reverse_lazy("staff_app:clientarea")
 
     def get_object(self):
-        return get_object_or_404(self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"])
+        return get_object_or_404(
+            self.model, pk=self.kwargs["office_id"], company=self.kwargs["pk"]
+        )
 
 
 class StaffUserCreate(CreateView):

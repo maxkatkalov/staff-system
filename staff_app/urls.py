@@ -27,7 +27,7 @@ from .views import (
     DepartmentDeleteView,
     PositionDeleteView,
     DepartmentListView,
-    OfficeListView
+    OfficeListView,
 )
 
 app_name = "staff_app"
@@ -42,11 +42,31 @@ clientarea_urlpatterns = [
         CompanyDetailView.as_view(),
         name="company-detail",
     ),
-    path("company-detail/<int:pk>/offices/", OfficeListView.as_view(), name="office-list"),
-    path("company-detail/<int:pk>/offices/create/", OfficeCreateView.as_view(), name="office-create"),
-    path("company-detail/<int:pk>/offices/<int:office_id>/", OfficeDetailView.as_view(), name="office-detail"),
-    path("company-detail/<int:pk>/offices/<int:office_id>/delete/", OfficeDeleteView.as_view(), name="office-delete"),
-    path("company-detail/<int:pk>/offices/<int:office_id>/update/", OfficeUpdateView.as_view(), name="office-update"),
+    path(
+        "company-detail/<int:pk>/offices/",
+        OfficeListView.as_view(),
+        name="office-list",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/create/",
+        OfficeCreateView.as_view(),
+        name="office-create",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/",
+        OfficeDetailView.as_view(),
+        name="office-detail",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/delete/",
+        OfficeDeleteView.as_view(),
+        name="office-delete",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/update/",
+        OfficeUpdateView.as_view(),
+        name="office-update",
+    ),
     path(
         "company-detail/<int:pk>/departments/create",
         DepartmentCreateView.as_view(),
@@ -108,10 +128,26 @@ clientarea_urlpatterns = [
         name="company-update",
     ),
     path("<int:pk>/", ProfileDetailView.as_view(), name="client-detail"),
-    path("<int:pk>/update-username/", StaffUsernameUpdate.as_view(), name="client-update-username"),
-    path("<int:pk>/update-name-surname/", StaffNameSurnameUpdate.as_view(), name="client-update-name-surname"),
-    path("<int:pk>/email-update/", StaffEmailUpdateView.as_view(), name="email-update"),
-    path("<int:pk>/logo-update/", StaffLogoUpdateView.as_view(), name="logo-update"),
+    path(
+        "<int:pk>/update-username/",
+        StaffUsernameUpdate.as_view(),
+        name="client-update-username",
+    ),
+    path(
+        "<int:pk>/update-name-surname/",
+        StaffNameSurnameUpdate.as_view(),
+        name="client-update-name-surname",
+    ),
+    path(
+        "<int:pk>/email-update/",
+        StaffEmailUpdateView.as_view(),
+        name="email-update",
+    ),
+    path(
+        "<int:pk>/logo-update/",
+        StaffLogoUpdateView.as_view(),
+        name="logo-update",
+    ),
 ]
 
 urlpatterns = [

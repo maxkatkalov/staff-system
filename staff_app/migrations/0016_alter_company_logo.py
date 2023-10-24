@@ -12,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="company",
             name="logo",
-            field=models.ImageField(blank=True, null=True, upload_to="company_logos"),
+            field=models.ImageField(
+                blank=True, null=True, upload_to="company_logos"
+            ),
         ),
     ]
