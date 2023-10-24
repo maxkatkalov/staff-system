@@ -45,7 +45,9 @@ class ProfileDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user_companies"] = self.request.user.companies.order_by(
+        context["user_companies"] = Company.objects.select_related(
+            "owner"
+        ).filter(owner__id=self.request.user.pk).order_by(
             "-created_at_staff"
         )[:5]
         return context
