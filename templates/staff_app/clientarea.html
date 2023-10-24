@@ -33,7 +33,7 @@
     <body>
     <section>
       <div class="container">
-        <h4 class="text-center">Total companies {{ total_companies }}</h4>
+        <h4 class="text-center">Total companies {{ total_companies }} <a href="{% url 'staff_app:company-create' %}" class="text-center btn btn-primary">Create Company</a></h4>
         {% block pagination %}
           <div class="text-center">
             {% include "includes/paginator.html" %}

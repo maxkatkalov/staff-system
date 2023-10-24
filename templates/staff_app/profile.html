@@ -49,12 +49,13 @@
     </div>
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <h5>Recently created companies: </h5>
+        <h5>Recently created companies: </h5> <div>
         {% if user_companies %}
         <ul class="list-group">
           {% for company in user_companies.all %}
           <li class="list-group-item"><a href="{% url 'staff_app:company-detail' company.pk %}">{{ company.name }}</a></li>
           {% endfor %}
+        <a href="{% url 'staff_app:company-create' %}" class="btn btn-primary">Create Company</a>
         </ul>
         {% else %}
         <div class="alert alert-info" role="alert">
