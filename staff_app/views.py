@@ -1,11 +1,11 @@
 import datetime
 
+from django.db.models import F, ExpressionWrapper, DateField, IntegerField, Count, Value
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.http import HttpRequest
 from django.views.generic import (
     DetailView,
-    ListView,
     CreateView,
     DeleteView,
     UpdateView,
@@ -97,30 +97,21 @@ class CompanyListView(LoginRequiredMixin, ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return (
-            get_user_model()
-            .objects.get(pk=self.request.user.pk)
-            .companies.all()
+        return Company.objects.select_related("owner").filter(owner=self.request.user.id).annotate(
+            departments_count=Count('departments'),
+            offices_count=Count('company_offices'),
         )
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        companies = StaffUser.objects.get(
-            pk=self.request.user.pk
-        ).companies.all()
-        context["departments_count"] = {
-            company.pk: company.departments.count() for company in companies
-        }
-        context["offices_count"] = {
-            company.pk: company.company_offices.count()
-            for company in companies
-        }
+        companies = self.get_queryset()
+        context["departments_count"] = {company.pk: company.departments_count for company in companies}
+        context["offices_count"] = {company.pk: company.offices_count for company in companies}
         context["company_exists"] = {
-            company.pk: (datetime.date.today() - company.created_at_staff).days
-            + 1
+            company.pk: (datetime.date.today() - company.created_at_staff).days + 1
             for company in companies
         }
-        context["total_companies"] = len(companies)
+        context["total_companies"] = companies.count()
         return context
 
 
