@@ -67,6 +67,9 @@
       </div>
     </section>
     </body>
+    {% else %}
+        <h4 class="text-center">No companies yet
+          <a href="{% url 'staff_app:company-create' %}" class="text-center btn btn-primary">Create Company</a></h4>
   {% endif %}
 
 
