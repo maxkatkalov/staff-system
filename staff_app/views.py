@@ -99,16 +99,13 @@ class CompanyListView(LoginRequiredMixin, ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Company.objects.select_related("owner").filter(owner=self.request.user.id).annotate(
-            departments_count=Count('departments'),
-            offices_count=Count('company_offices'),
-        )
+        return Company.objects.prefetch_related("company_offices", "departments").filter(owner=self.request.user)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         companies = self.get_queryset()
-        context["departments_count"] = {company.pk: company.departments_count for company in companies}
-        context["offices_count"] = {company.pk: company.offices_count for company in companies}
+        context["departments_count"] = {company.pk: company.departments.count() for company in companies}
+        context["offices_count"] = {company.pk: company.company_offices.count() for company in companies}
         context["company_exists"] = {
             company.pk: (datetime.date.today() - company.created_at_staff).days + 1
             for company in companies
