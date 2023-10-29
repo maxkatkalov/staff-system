@@ -53,13 +53,10 @@
     {% block delete %}
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div><a href="{% url 'staff_app:department-create' pk=department.pk %}" class="btn btn-primary">Create department</a> <a href="" class="text-center">See all</a></div>
+        <div><a href="{% url 'staff_app:department-create' pk=department.company.pk %}" class="btn btn-primary">Create department</a> <a href="{% url 'staff_app:department-list' pk=department.company.pk %}" class="text-center">See all</a></div>
       </div>
     </div>
     {% endblock %}
   </div>
-</div>
-</div>
-</div>
 </div>
 </body>

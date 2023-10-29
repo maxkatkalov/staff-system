@@ -16,6 +16,7 @@ from .views import (
     PositionCreateView,
     PositionDetailView,
     PositionUpdateView,
+    PositionListView,
     OfficeDetailView,
     OfficeCreateView,
     OfficeDeleteView,
@@ -26,7 +27,6 @@ from .views import (
     StaffLogoUpdateView,
     DepartmentDeleteView,
     PositionDeleteView,
-    DepartmentListView,
     OfficeListView,
 )
 
@@ -111,6 +111,11 @@ clientarea_urlpatterns = [
         "company-detail/<int:pk>/departments/<int:id>/positions/<int:position_id>/delete/",
         PositionDeleteView.as_view(),
         name="position-delete",
+    ),
+    path(
+        "company-detail/<int:pk>/departments/<int:id>/positions/",
+        PositionListView.as_view(),
+        name="position-list",
     ),
     path(
         "company-detail/<int:pk>/create-staff/",

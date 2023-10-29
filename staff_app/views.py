@@ -203,6 +203,22 @@ class PositionDetailView(DetailView):
         return self.object.get_absolute_url()
 
 
+class PositionListView(ListView):
+    model = Position
+    paginate_by = 3
+
+    def get_queryset(self):
+        return self.model.objects.select_related("department").filter(department_id=self.kwargs["id"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["department"] = Department.objects.select_related(
+            "company",
+        ).prefetch_related("positions").get(pk=self.kwargs["id"])
+        context["department_total_positions"] = context["department"].positions.count()
+        return context
+
+
 class PositionUpdateView(UpdateView):
     model = Position
     fields = ("name", "description")
