@@ -146,7 +146,7 @@ class DepartmentUpdateView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class DepartmentDetailView(DetailView):
+class DepartmentDetailView(DetailView, MultipleObjectMixin):
     model = Department
     context_object_name = "department"
 
@@ -154,6 +154,15 @@ class DepartmentDetailView(DetailView):
         return get_object_or_404(
             Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"]
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(
+            object_list=self.object.positions.all(), **kwargs
+        )
+        context["positions_count"] = self.object.positions.count()
+        context["positions"] = self.object.positions.all()[:5]
+        return context
+
 
     def get_success_url(self):
         return self.object.get_absolute_url()

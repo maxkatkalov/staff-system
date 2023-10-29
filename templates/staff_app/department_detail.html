@@ -53,7 +53,29 @@
     {% block delete %}
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div><a href="{% url 'staff_app:department-create' pk=department.company.pk %}" class="btn btn-primary">Create department</a> <a href="{% url 'staff_app:department-list' pk=department.company.pk %}" class="text-center">See all</a></div>
+
+        {% if positions %}
+          <div class="col-md-12"><label class="labels">Recently created positions (total: {{ positions_count }}):</label></div>
+          <div class="col-md-12"><label class="labels"></label></div>
+          {% for position in positions %}
+            <div class="col-md-12"><span class="form-control">
+              <a
+                  href="{% url 'staff_app:position-detail' id=department.pk pk=department.company.pk position_id=position.pk%}">
+                {{ position.name }}</a></span></div><br>
+          {% endfor %}
+        {% else %}
+          <div><h5>No positions yet</h5> <a href="" class="text-right">Create position</a></div>
+        {% endif %}
+        {% block pagination %}
+        <div class="text-center">
+          {% include "includes/paginator.html" %}
+        </div>
+        {% endblock %}
+        <div>
+          <a href="{% url 'staff_app:position-create' id=department.pk pk=department.company.pk %}"
+             class="btn btn-primary">Create position</a>
+          <a href="{% url 'staff_app:position-list' id=department.pk pk=department.company.pk %}" class="text-center">See all</a></div>
+        <br>
       </div>
     </div>
     {% endblock %}
