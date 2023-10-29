@@ -1,7 +1,7 @@
 import datetime
 
-from django.contrib.auth import login
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.http import HttpRequest
 from django.views.generic import (
@@ -35,6 +35,12 @@ from staff_app.forms import (
 
 def index(request: HttpRequest):
     return render(request, "staff_app/index.html")
+
+
+def login_test_user(request):
+    user = authenticate(request, username="user36", password="GGduIU@")
+    login(request, user)
+    return redirect("staff_app:clientarea")
 
 
 class ProfileDetailView(DetailView):
