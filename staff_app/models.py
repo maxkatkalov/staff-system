@@ -31,6 +31,9 @@ class Company(models.Model):
         upload_to="images/company/logos", null=True, blank=True
     )
 
+    class Meta:
+        ordering = ["-created_at_staff"]
+
     def get_absolute_url(self):
         return reverse("staff_app:company-detail", args=[self.pk])
 
@@ -50,6 +53,9 @@ class Office(models.Model):
     )
     opened = models.DateField(null=True, blank=True)
 
+    class Meta:
+        ordering = ["-opened"]
+
     def __str__(self) -> str:
         return f"{self.name}, {self.city}"
 
@@ -61,6 +67,12 @@ class Department(models.Model):
     )
     description = models.TextField(null=True, blank=True)
     created_at_staff = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at_staff"]
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
 
     def get_absolute_url(self):
         return reverse(
@@ -81,6 +93,12 @@ class Position(models.Model):
     )
     description = models.TextField(null=True, blank=True)
     created_at_staff = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at_staff"]
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
 
     def __str__(self) -> str:
         return self.name
