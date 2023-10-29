@@ -53,7 +53,9 @@
     {% block delete %}
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div><a href="{% url 'staff_app:position-create' pk=object.department.company.pk id=object.department.pk %}" class="btn btn-primary">Create new position for this department</a> <a href="" class="text-center">See all</a></div>
+        <a href="{% url 'staff_app:position-create' id=position.department.pk pk=position.department.company.pk %}"
+             class="btn btn-primary">Create another position</a>
+          <a href="{% url 'staff_app:position-list' id=position.department.pk pk=position.department.company.pk %}" class="text-center">See all</a></div>
       </div>
     </div>
     {% endblock %}

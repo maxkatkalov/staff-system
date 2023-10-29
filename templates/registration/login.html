@@ -12,6 +12,12 @@
   <body>
   <!-- partial:index.partial.html -->
   <body class="align">
+  {% if user.is_authenticated %}
+    <script>
+        // JavaScript code for the redirect
+        window.location.href = {% url 'staff_app:clientarea' %};
+    </script>
+  {% endif %}
   <div class="grid">
     <form method="post" class="form login">
       {% csrf_token %}
