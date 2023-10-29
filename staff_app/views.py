@@ -164,7 +164,9 @@ class DepartmentListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return self.model.objects.filter(company__pk=self.kwargs["pk"])
+        return self.model.objects.select_related(
+            "company"
+        ).filter(company__pk=self.kwargs["pk"])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
