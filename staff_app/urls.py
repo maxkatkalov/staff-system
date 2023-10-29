@@ -7,7 +7,6 @@ from .views import (
     CompanyCreateView,
     CompanyDetailView,
     CompanyDeleteView,
-    StaffUserCreate,
     CompanyUpdateView,
     DepartmentCreateView,
     DepartmentUpdateView,
@@ -116,11 +115,6 @@ clientarea_urlpatterns = [
         "company-detail/<int:pk>/departments/<int:id>/positions/",
         PositionListView.as_view(),
         name="position-list",
-    ),
-    path(
-        "company-detail/<int:pk>/create-staff/",
-        StaffUserCreate.as_view(),
-        name="staff-create",
     ),
     path(
         "company-detail/<int:pk>/delete/",

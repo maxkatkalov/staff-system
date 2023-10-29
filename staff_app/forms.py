@@ -1,18 +1,14 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model  # Import get_user_model
 
-from .models import Company, StaffUser, Department
+from .models import Company, Department, StaffUser
 
 
-class StaffCreateForm(UserCreationForm):
+class RegistrationForm(UserCreationForm):
     class Meta:
-        model = StaffUser
-        fields = UserCreationForm.Meta.fields + (
-            "first_name",
-            "last_name",
-            "logo",
-            "email",
-        )
+        model = get_user_model()
+        fields = ("username", "password1", "password2")
 
 
 class CompanyForm(ModelForm):
@@ -30,7 +26,7 @@ class CompanyForm(ModelForm):
 
 class StaffUsernameUpdateForm(ModelForm):
     class Meta:
-        model = StaffUser
+        model = get_user_model()
         fields = ("username",)
 
 
@@ -42,13 +38,13 @@ class StaffNameSurnameUpdateForm(ModelForm):
 
 class StaffEmailUpdateForm(ModelForm):
     class Meta:
-        model = StaffUser
+        model = get_user_model()
         fields = ("email",)
 
 
 class StaffLogoUpdateForm(ModelForm):
     class Meta:
-        model = StaffUser
+        model = get_user_model()
         fields = ("logo",)
 
 

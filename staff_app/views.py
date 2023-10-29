@@ -1,8 +1,8 @@
 import datetime
 
-from django.db.models import F, ExpressionWrapper, DateField, IntegerField, Count, Value
+from django.contrib.auth import login
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.http import HttpRequest
 from django.views.generic import (
     DetailView,
@@ -12,7 +12,6 @@ from django.views.generic import (
     ListView,
 )
 from django.views.generic.list import MultipleObjectMixin
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from staff_app.models import (
@@ -24,8 +23,8 @@ from staff_app.models import (
 )
 
 from staff_app.forms import (
+    RegistrationForm,
     CompanyForm,
-    StaffCreateForm,
     DepartmentForm,
     StaffUsernameUpdateForm,
     StaffNameSurnameUpdateForm,
@@ -335,12 +334,15 @@ class OfficeDeleteView(DeleteView):
         )
 
 
-class StaffUserCreate(CreateView):
-    model = StaffUser
-    form_class = StaffCreateForm
+class RegistrationView(CreateView):
+    template_name = 'registration/register.html'
+    form_class = RegistrationForm
+    success_url = reverse_lazy("staff_app:clientarea")
 
-    def get_success_url(self):
-        return self.object.get_absolute_url()
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
 
 
 class StaffUsernameUpdate(UpdateView):
