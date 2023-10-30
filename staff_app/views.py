@@ -43,7 +43,7 @@ def login_test_user(request):
     return redirect("staff_app:clientarea")
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = StaffUser
     context_object_name = "staffuser"
     template_name = "staff_app/profile.html"
@@ -58,7 +58,7 @@ class ProfileDetailView(DetailView):
         return context
 
 
-class CompanyCreateView(CreateView):
+class CompanyCreateView(LoginRequiredMixin, CreateView):
     model = Company
     form_class = CompanyForm
     template_name = "staff_app/compnay-creation.html"
@@ -69,7 +69,7 @@ class CompanyCreateView(CreateView):
         return super().form_valid(form)
 
 
-class CompanyUpdateView(UpdateView):
+class CompanyUpdateView(LoginRequiredMixin, UpdateView):
     model = Company
     form_class = CompanyForm
     template_name = "staff_app/company-update.html"
@@ -78,7 +78,7 @@ class CompanyUpdateView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class CompanyDetailView(DetailView, MultipleObjectMixin):
+class CompanyDetailView(LoginRequiredMixin, DetailView, MultipleObjectMixin):
     model = Company
     template_name = "staff_app/company-detail.html"
 
@@ -92,7 +92,7 @@ class CompanyDetailView(DetailView, MultipleObjectMixin):
         return context
 
 
-class CompanyDeleteView(DeleteView):
+class CompanyDeleteView(LoginRequiredMixin, DeleteView):
     model = Company
     success_url = reverse_lazy("staff_app:clientarea")
 
@@ -127,7 +127,7 @@ class CompanyListView(LoginRequiredMixin, ListView):
         return context
 
 
-class DepartmentCreateView(CreateView):
+class DepartmentCreateView(LoginRequiredMixin, CreateView):
     model = Department
     form_class = DepartmentForm
 
@@ -136,7 +136,7 @@ class DepartmentCreateView(CreateView):
         return super().form_valid(form)
 
 
-class DepartmentDeleteView(DeleteView):
+class DepartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Department
 
     def get_object(self):
@@ -151,7 +151,7 @@ class DepartmentDeleteView(DeleteView):
         )
 
 
-class DepartmentUpdateView(UpdateView):
+class DepartmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Department
     form_class = DepartmentForm
 
@@ -164,7 +164,7 @@ class DepartmentUpdateView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class DepartmentDetailView(DetailView, MultipleObjectMixin):
+class DepartmentDetailView(LoginRequiredMixin, DetailView, MultipleObjectMixin):
     model = Department
     context_object_name = "department"
 
@@ -185,7 +185,7 @@ class DepartmentDetailView(DetailView, MultipleObjectMixin):
         return self.object.get_absolute_url()
 
 
-class DepartmentListView(ListView):
+class DepartmentListView(LoginRequiredMixin, ListView):
     model = Department
     paginate_by = 3
 
@@ -201,7 +201,7 @@ class DepartmentListView(ListView):
         return context
 
 
-class PositionCreateView(CreateView):
+class PositionCreateView(LoginRequiredMixin, CreateView):
     model = Position
     fields = ("name", "description")
 
@@ -216,7 +216,7 @@ class PositionCreateView(CreateView):
         return self.object.get_absolute_url()
 
 
-class PositionDetailView(DetailView):
+class PositionDetailView(LoginRequiredMixin, DetailView):
     model = Position
 
     def get_object(self):
@@ -229,7 +229,7 @@ class PositionDetailView(DetailView):
         return self.object.get_absolute_url()
 
 
-class PositionListView(ListView):
+class PositionListView(LoginRequiredMixin, ListView):
     model = Position
     paginate_by = 3
 
@@ -253,7 +253,7 @@ class PositionListView(ListView):
         return context
 
 
-class PositionUpdateView(UpdateView):
+class PositionUpdateView(LoginRequiredMixin, UpdateView):
     model = Position
     fields = ("name", "description")
 
@@ -267,7 +267,7 @@ class PositionUpdateView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class PositionDeleteView(DeleteView):
+class PositionDeleteView(LoginRequiredMixin, DeleteView):
     model = Position
 
     def get_object(self):
@@ -280,7 +280,7 @@ class PositionDeleteView(DeleteView):
         return self.object.department.get_absolute_url()
 
 
-class OfficeCreateView(CreateView):
+class OfficeCreateView(LoginRequiredMixin, CreateView):
     model = Office
     fields = [
         "name",
@@ -302,7 +302,7 @@ class OfficeCreateView(CreateView):
         )
 
 
-class OfficeUpdateView(UpdateView):
+class OfficeUpdateView(LoginRequiredMixin, UpdateView):
     model = Office
     fields = [
         "name",
@@ -327,7 +327,7 @@ class OfficeUpdateView(UpdateView):
         )
 
 
-class OfficeDetailView(DetailView):
+class OfficeDetailView(LoginRequiredMixin, DetailView):
     model = Office
 
     def get_object(self):
@@ -336,7 +336,7 @@ class OfficeDetailView(DetailView):
         )
 
 
-class OfficeListView(ListView):
+class OfficeListView(LoginRequiredMixin, ListView):
     model = Office
     paginate_by = 3
 
@@ -350,7 +350,7 @@ class OfficeListView(ListView):
         return context
 
 
-class OfficeDeleteView(DeleteView):
+class OfficeDeleteView(LoginRequiredMixin, DeleteView):
     model = Office
     success_url = reverse_lazy("staff_app:clientarea")
 
@@ -371,7 +371,7 @@ class RegistrationView(CreateView):
         return super().form_valid(form)
 
 
-class StaffUsernameUpdate(UpdateView):
+class StaffUsernameUpdate(LoginRequiredMixin, UpdateView):
     model = StaffUser
     form_class = StaffUsernameUpdateForm
     template_name = "staff_app/staffuser_update_forms/username-update.html"
@@ -380,7 +380,7 @@ class StaffUsernameUpdate(UpdateView):
         return self.object.get_absolute_url()
 
 
-class StaffNameSurnameUpdate(UpdateView):
+class StaffNameSurnameUpdate(LoginRequiredMixin, UpdateView):
     model = StaffUser
     form_class = StaffNameSurnameUpdateForm
     template_name = "staff_app/staffuser_update_forms/name-surname.html"
@@ -389,7 +389,7 @@ class StaffNameSurnameUpdate(UpdateView):
         return self.object.get_absolute_url()
 
 
-class StaffEmailUpdateView(UpdateView):
+class StaffEmailUpdateView(LoginRequiredMixin, UpdateView):
     model = StaffUser
     form_class = StaffEmailUpdateForm
     template_name = "staff_app/staffuser_update_forms/email.html"
@@ -398,7 +398,7 @@ class StaffEmailUpdateView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class StaffLogoUpdateView(UpdateView):
+class StaffLogoUpdateView(LoginRequiredMixin, UpdateView):
     model = StaffUser
     form_class = StaffLogoUpdateForm
     template_name = "staff_app/staffuser_update_forms/logo.html"
