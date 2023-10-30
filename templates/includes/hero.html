@@ -2,7 +2,7 @@
 
 <div id="fh5co-hero-wrapper">
   <nav class="container navbar navbar-expand-lg main-navbar-nav navbar-light">
-    <a class="navbar-brand" href="">App</a>
+    <a class="navbar-brand" href="">StaffUs</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,27 +16,28 @@
           <a class="nav-link" href="#" onclick="$('#fh5co-features').goTo();return false;">Features</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="#reviews" onclick="$('#fh5co-reviews').goTo();return false;">Reviews</a>
+        </li>
+        <li class="nav-item">
           <a class="btn btn-primary special-login-button" href="{% url 'login' %}">Login</a>
         </li>
         <li class="nav-item">
           <a class="btn btn-primary special-login-button" href="{% url 'register' %}">Sign Up</a>
         </li>
+        <li class="nav-item">
+          <a class="btn btn-primary special-login-button" href="{% url 'test-login' %}">Test User</a>
+        </li>
       </ul>
-      <div class="social-icons-header">
-        <a href="https://www.facebook.com/fh5co"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://freehtml5.co"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.twitter.com/fh5co"><i class="fab fa-twitter"></i></a>
-      </div>
     </div>
 
   </nav>
 
   <div class="container fh5co-hero-inner">
-    <h1 class="animated fadeIn wow" data-wow-delay="0.4s">A Free HTML5 App Template Built with Bootstrap 4</h1>
-    <p class="animated fadeIn wow" data-wow-delay="0.67s">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et voluptates, aliquid soluta distinctio dolorum tenetur. </p>
-    <button class="btn btn-md download-btn-first wow fadeInLeft animated" data-wow-delay="0.85s"><a href="test.com">Sign Up</a></button>
+    <h1 class="animated fadeIn wow" data-wow-delay="0.4s">Streamline Your Staff Management with Our Platform</h1>
+    <p class="animated fadeIn wow" data-wow-delay="0.67s">Effortlessly organize your company's departments and offices for improved efficiency and collaboration. </p>
+    <button class="btn btn-md download-btn-first wow fadeInLeft animated" data-wow-delay="0.85s"><a class="btn" href="{% url 'register' %}">Sign Up</a></button>
     <button class="btn btn-md features-btn-first animated fadeInLeft wow" data-wow-delay="0.95s" onclick="$('#fh5co-features').goTo();return false;">Features</button>
-    <img class="fh5co-hero-smartphone animated fadeInRight wow" data-wow-delay="1s" src="{% static 'img/phone-image.png' %}" alt="Smartphone">
+    <img class="fh5co-hero-smartphone animated fadeInRight wow" data-wow-delay="1s" src="{% static 'img/company-organization-hierarchy-schema-template-vector-22656285(1).webp' %}" alt="Smartphone">
   </div>
 
 
