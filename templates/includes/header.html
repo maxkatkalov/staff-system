@@ -3,5 +3,5 @@
 <nav class="style-1">
   <a href="{% url 'staff_app:clientarea' %}" class="btn">Companies</a>
   <a href="{% url 'staff_app:client-detail' request.user.pk %}" class="btn">Profile</a>
-  <a href="{% url 'logout' %}" class="btn">Log out</a>
+  <a href="{% url 'logout' %}?next=/" class="btn">Log out</a>
 </nav>
