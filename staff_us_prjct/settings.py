@@ -5,7 +5,9 @@ from django.shortcuts import reverse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-m9@d&-&a+@c5t$&3x3*pw2e(=^+@!#=ao9(_i2796!488gk7hq"
+SECRET_KEY = (
+    "django-insecure-m9@d&-&a+@c5t$&3x3*pw2e(=^+@!#=ao9(_i2796!488gk7hq"
+)
 
 DEBUG = True
 
@@ -23,7 +25,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "debug_toolbar",
-    "staff_app.apps.StaffAppConfig"
+    "staff_app.apps.StaffAppConfig",
 ]
 
 MIDDLEWARE = [
@@ -91,11 +93,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
