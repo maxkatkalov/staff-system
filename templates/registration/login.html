@@ -12,8 +12,14 @@
   <body>
   <!-- partial:index.partial.html -->
   <body class="align">
+  {% if user.is_authenticated %}
+    <script>
+        // JavaScript code for the redirect
+        window.location.href = {% url 'staff_app:clientarea' %};
+    </script>
+  {% endif %}
   <div class="grid">
-    <form method="post" class="form login">
+    <form method="post" class="form login" novalidate>
       {% csrf_token %}
       <div class="form__field">
         <label for="login__username">
@@ -29,11 +35,15 @@
         </label>
         <input id="login__password" type="password" name="password" class="form__input" placeholder="Password" required>
       </div>
+        {% if form.errors %}
+          <span class="error">{{ form.errors }}</span>
+        {% endif %}
       <div class="form__field">
         <input type="submit" value="Sign In">
       </div>
+
     </form>
-    <p class="text--center">Not a member? <a href="#">Sign up now</a> <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{% static 'assets/images/icons.svg#arrow-right' %}"></use></svg></p>
+    <p class="text--center">Not a member? <a href="{% url 'register' %}">Sign up now</a> <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{% static 'assets/images/icons.svg#arrow-right' %}"></use></svg></p>
   </div>
   <svg xmlns="http://www.w3.org/2000/svg" class="icons">
     <symbol id="arrow-right" viewBox="0 0 1792 1792">

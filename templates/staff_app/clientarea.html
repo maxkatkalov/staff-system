@@ -1,8 +1,18 @@
 {% load static %}
+{% load get_value_from_dict %}
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8">
+    <title>Pricing Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+  </head>
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
   <link rel="stylesheet" href="{% static 'css/clientarea_company_objects.css' %}">
   <meta charset="utf-8" />
   <title>Table Style</title>
@@ -13,35 +23,61 @@
   {% include 'includes/header.html' %}
 {% endblock %}
 
+  <main>
+    <span><p>Companies</p></span>
+  </main>
+
 {% block content %}
-  <body>
-  <div class="table-title">
-    <h5 class="create-company"><a class="create-link" href="{% url 'staff_app:company-create' %}">Create a new company</a></h5>
-    <h3>Your Companies</h3>
-  </div>
-  <table class="table-fill">
-    <thead>
-    <tr>
-      <th class="text-left">Company name</th>
-      <th class="text-left">Created at</th>
-      <th class="text-left">Staff size</th>
-    </tr>
-    </thead>
-    <tbody class="table-hover">
-    {% for company in company_list %}
-      <tr>
-        <td class="text-left"><a class="company-link" href="{{ company.get_absolute_url }}">{{ company.name }}</a></td>
-        <td class="text-left">{{ company.created_at_staff }}</td>
-        <td class="text-left">{{ company.copmany_staff_size }}</td>
-      </tr>
-    {% endfor %}
-    {% block pagination %}
-      {% include "includes/paginator.html" %}
-    {% endblock %}
-    </tbody>
+  {% if object_list %}
+
+    <body>
+    <section>
+      <div class="container">
+        <h4 class="text-center">Total companies {{ total_companies }} <a href="{% url 'staff_app:company-create' %}" class="text-center btn btn-primary">Create Company</a></h4>
+        {% block pagination %}
+          <div class="text-center">
+            {% include "includes/paginator.html" %}
+          </div>
+        {% endblock %}
+        <div class="row">
+
+          {% for company in companies_list %}
+            <div class="col-sm-4">
+              <div class="card text-center">
+                <div class="title">
+                  <img {% if company.logo %} src="{{ company.logo.url }}" alt="My Linked Image" class="fa" {% else %} src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" alt="My Linked Image" class="fa" {% endif %}>
+                  <h2>{{ company.name }}</h2>
+                </div>
+                <div class="price">
+                  <h3><sup>Created:</sup>{{ company.created_at_staff }}</h3>
+                </div>
+                <div class="option">
+                  <ul>
+                    <li> <i class="fa fa-bars" aria-hidden="true"></i> Departments: {{ departments_count|get_value_from_dict:company.pk }} </li>
+                    <li> <i class="fa fa-university" aria-hidden="true"></i> Offices: {{ offices_count|get_value_from_dict:company.pk }} </li>
+                    <li> <i class="fa fa-users" aria-hidden="true"></i> Staff: {{ company.copmany_staff_size }} </li>
+                    <li> <i class="fa fa-calendar" aria-hidden="true"></i> Exists: {{ company_exists|get_value_from_dict:company.pk }} day{{ company_exists|get_value_from_dict:company.pk|pluralize }} </li>
+                  </ul>
+                </div>
+                <a href="{{ company.get_absolute_url }}">Details</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    </body>
+    {% else %}
+        <h4 class="text-center">No companies yet
+          <a href="{% url 'staff_app:company-create' %}" class="text-center btn btn-primary">Create Company</a></h4>
+  {% endif %}
+
+
+  </tbody>
   </table>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
+</html>

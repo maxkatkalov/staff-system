@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Page</title>
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -19,7 +21,8 @@
   <div class="row">
     <div class="col-md-3 border-right">
       <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-        <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+
+          <img class="rounded-circle mt-5" width="150px" {% if company.logo %} src="{{ company.logo.url }}" {% else %} src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="{{ company.name }} Logo" {% endif %}>
         <span class="font-weight-bold">
           <a href="{% url 'staff_app:company-update' company.pk %}" class="btn btn-primary">Update</a>
           <span><a href="{% url 'staff_app:company-delete' company.pk %}" class="btn btn-danger">Delete</a></span>
@@ -38,11 +41,12 @@
           <div class="col-md-6"><label class="labels">Staff size</label><span class="form-control">{{ company.copmany_staff_size }}</span></div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-12"><label class="labels">Country</label><span class="form-control">{{ company.country }}</span></div>
+          <div class="col-md-12"><label class="labels">Description</label><span class="form-control">{{ company.description }}</span></div>
+          <div class="col-md-12"><label class="labels">Country</label><span class="form-control">{{ company.country_registry }}</span></div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-6"><label class="labels">Description</label><span class="form-control">{{ company.description }}</span></div>
-          <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
+          <div class="col-md-6"><label class="labels">Foundation date</label><span class="form-control">{{ company.foundation_date }}</span></div>
+          <div class="col-md-6"><label class="labels">Offices amount</label><span class="form-control">{{ offices_count }}</span></div>
         </div>
         <div class="mt-5 text-center">
           <button class="btn btn-primary profile-button" type="button" onclick="window.location.href='{% url 'staff_app:clientarea' %}'">Back to companies</button>
@@ -51,10 +55,25 @@
     </div>
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div class="col-md-12"><label class="labels">Department list:</label></div>
-        {% for department in object_list %}
-        <div class="col-md-12"><span class="form-control">{{ department.name }}</span></div><br>
-        {% endfor %}
+
+        {% if departments %}
+          <div class="col-md-12"><label class="labels">Departments list (total: {{ total_departments }}):</label></div>
+          <div class="col-md-12"><label class="labels"></label></div>
+          {% for department in departments %}
+            <div class="col-md-12"><span class="form-control"><a href="{% url 'staff_app:department-detail' id=department.pk pk=company.pk %}">{{ department.name }}</a></span></div><br>
+          {% endfor %}
+        {% else %}
+          <div><h5>No departments yet</h5> <a href="{% url 'staff_app:department-create' pk=company.pk %}" class="text-right">Create department</a></div>
+        {% endif %}
+        {% block pagination %}
+        <div class="text-center">
+          {% include "includes/paginator.html" %}
+        </div>
+        {% endblock %}
+        <div><a href="{% url 'staff_app:department-create' pk=company.pk %}" class="btn btn-primary">Create department</a> <a href="{% url 'staff_app:department-list' pk=company.pk %}" class="text-center">See all</a></div>
+        <br>
+        <div><a href="{% url 'staff_app:office-create' pk=company.pk %}" class="btn btn-primary">Create office</a>  <a href="{% url 'staff_app:office-list' pk=company.pk %}" class="text-right">See offices</a></div>
+
       </div>
     </div>
   </div>

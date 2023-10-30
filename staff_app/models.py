@@ -2,7 +2,8 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
+from django.conf import settings
 
 
 class Company(models.Model):
@@ -26,6 +27,12 @@ class Company(models.Model):
     )
     description = models.TextField(null=True, blank=True)
     country_registry = models.CharField(max_length=255, null=True, blank=True)
+    logo = models.ImageField(
+        upload_to="images/company/logos", null=True, blank=True
+    )
+
+    class Meta:
+        ordering = ["-created_at_staff"]
 
     def get_absolute_url(self):
         return reverse("staff_app:company-detail", args=[self.pk])
@@ -36,12 +43,18 @@ class Company(models.Model):
 
 class Office(models.Model):
     name = models.CharField(max_length=63)
-    # TODO: add choices for this fields
     city = models.CharField(max_length=110)
     country = models.CharField(max_length=110)
     address = models.CharField(max_length=255)
     workspaces = models.IntegerField()
     description = models.TextField()
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, related_name="company_offices"
+    )
+    opened = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-opened"]
 
     def __str__(self) -> str:
         return f"{self.name}, {self.city}"
@@ -53,6 +66,13 @@ class Department(models.Model):
         Company, on_delete=models.CASCADE, related_name="departments"
     )
     description = models.TextField(null=True, blank=True)
+    created_at_staff = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at_staff"]
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
 
     def get_absolute_url(self):
         return reverse(
@@ -64,50 +84,43 @@ class Department(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=156, unique=True)
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="positions"
+    name = models.CharField(
+        max_length=156,
+        unique=True,
     )
-    department = models.ManyToManyField(Department, related_name="positions")
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, related_name="positions"
+    )
     description = models.TextField(null=True, blank=True)
+    created_at_staff = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at_staff"]
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
 
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self):
+        return reverse(
+            "staff_app:position-detail",
+            kwargs={
+                "position_id": self.pk,
+                "pk": self.department.company.pk,
+                "id": self.department.pk,
+            },
+        )
+
 
 class StaffUser(AbstractUser):
-    # owner = models.BooleanField(default=False)
-    # company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="staff_users")
-    # department = models.ForeignKey(
-    #     Department,
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    #     related_name="members"
-    # )
-    # position = models.ForeignKey(
-    #     Position,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     related_name="position_employees"
-    # )
-    # reporting_to = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     related_name="reporters",
-    #     null=True,
-    #     on_delete=models.CASCADE
-    # )
-    # salary = models.IntegerField(null=True)
-    # office = models.ForeignKey(
-    #     Office,
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL
-    # )
-    # fire_date = models.DateField(default=None, null=True)
-    # retirement_date = models.DateField(default=None, null=True)
-    # last_salary_review = models.DateField(default=None, null=True)
+    logo = models.ImageField(
+        upload_to="images/profile/logos", null=True, blank=True
+    )
 
     def __str__(self) -> str:
         return f"{self.username}"
+
+    def get_absolute_url(self):
+        return reverse("staff_app:client-detail", args=[self.pk])

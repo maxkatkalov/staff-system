@@ -7,7 +7,6 @@ from .views import (
     CompanyCreateView,
     CompanyDetailView,
     CompanyDeleteView,
-    StaffUserCreate,
     CompanyUpdateView,
     DepartmentCreateView,
     DepartmentUpdateView,
@@ -16,6 +15,18 @@ from .views import (
     PositionCreateView,
     PositionDetailView,
     PositionUpdateView,
+    PositionListView,
+    OfficeDetailView,
+    OfficeCreateView,
+    OfficeDeleteView,
+    OfficeUpdateView,
+    StaffUsernameUpdate,
+    StaffNameSurnameUpdate,
+    StaffEmailUpdateView,
+    StaffLogoUpdateView,
+    DepartmentDeleteView,
+    PositionDeleteView,
+    OfficeListView,
 )
 
 app_name = "staff_app"
@@ -31,9 +42,39 @@ clientarea_urlpatterns = [
         name="company-detail",
     ),
     path(
+        "company-detail/<int:pk>/offices/",
+        OfficeListView.as_view(),
+        name="office-list",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/create/",
+        OfficeCreateView.as_view(),
+        name="office-create",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/",
+        OfficeDetailView.as_view(),
+        name="office-detail",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/delete/",
+        OfficeDeleteView.as_view(),
+        name="office-delete",
+    ),
+    path(
+        "company-detail/<int:pk>/offices/<int:office_id>/update/",
+        OfficeUpdateView.as_view(),
+        name="office-update",
+    ),
+    path(
         "company-detail/<int:pk>/departments/create",
         DepartmentCreateView.as_view(),
         name="department-create",
+    ),
+    path(
+        "company-detail/<int:pk>/departments/<int:id>/delete",
+        DepartmentDeleteView.as_view(),
+        name="department-delete",
     ),
     path(
         "company-detail/<int:pk>/departments/",
@@ -66,9 +107,14 @@ clientarea_urlpatterns = [
         name="position-update",
     ),
     path(
-        "company-detail/<int:pk>/create-staff/",
-        StaffUserCreate.as_view(),
-        name="staff-create",
+        "company-detail/<int:pk>/departments/<int:id>/positions/<int:position_id>/delete/",
+        PositionDeleteView.as_view(),
+        name="position-delete",
+    ),
+    path(
+        "company-detail/<int:pk>/departments/<int:id>/positions/",
+        PositionListView.as_view(),
+        name="position-list",
     ),
     path(
         "company-detail/<int:pk>/delete/",
@@ -81,6 +127,26 @@ clientarea_urlpatterns = [
         name="company-update",
     ),
     path("<int:pk>/", ProfileDetailView.as_view(), name="client-detail"),
+    path(
+        "<int:pk>/update-username/",
+        StaffUsernameUpdate.as_view(),
+        name="client-update-username",
+    ),
+    path(
+        "<int:pk>/update-name-surname/",
+        StaffNameSurnameUpdate.as_view(),
+        name="client-update-name-surname",
+    ),
+    path(
+        "<int:pk>/email-update/",
+        StaffEmailUpdateView.as_view(),
+        name="email-update",
+    ),
+    path(
+        "<int:pk>/logo-update/",
+        StaffLogoUpdateView.as_view(),
+        name="logo-update",
+    ),
 ]
 
 urlpatterns = [

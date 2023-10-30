@@ -1,0 +1,12 @@
+{% extends 'staff_app/profile.html' %}
+{% load crispy_forms_tags %}
+
+{% block logo-update %}
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {{ form|crispy }}
+  <div class="mt-5 text-center">
+    <button type="submit" class="btn btn-primary text-right">Save</button>
+  </div>
+</form>
+{% endblock %}
