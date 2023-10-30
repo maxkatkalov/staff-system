@@ -25,7 +25,7 @@
         <img class="rounded-circle mt-5" width="150px" src="https://images.pexels.com/photos/5602166/pexels-photo-5602166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="{{ department.name }} Logo">
         <span class="font-weight-bold">
           <a href="{% url 'staff_app:position-update' id=object.department.pk pk=object.department.company.pk position_id=object.pk %}" class="btn btn-primary">Update</a>
-          <span><a href="" class="btn btn-danger">Delete</a></span>
+          <span><a href="{% url 'staff_app:position-delete' pk=object.department.company.pk id=object.department.pk position_id=object.pk %}" class="btn btn-danger">Delete</a></span>
         </span>
         <span> </span>
       </div>
