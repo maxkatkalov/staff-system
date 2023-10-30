@@ -50,11 +50,11 @@ class ProfileDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user_companies"] = Company.objects.select_related(
-            "owner"
-        ).filter(owner__id=self.request.user.pk).order_by(
-            "-created_at_staff"
-        )[:5]
+        context["user_companies"] = (
+            Company.objects.select_related("owner")
+            .filter(owner__id=self.request.user.pk)
+            .order_by("-created_at_staff")[:5]
+        )
         return context
 
 
@@ -104,15 +104,23 @@ class CompanyListView(LoginRequiredMixin, ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Company.objects.prefetch_related("company_offices", "departments").filter(owner=self.request.user)
+        return Company.objects.prefetch_related(
+            "company_offices", "departments"
+        ).filter(owner=self.request.user)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         companies = self.get_queryset()
-        context["departments_count"] = {company.pk: company.departments.count() for company in companies}
-        context["offices_count"] = {company.pk: company.company_offices.count() for company in companies}
+        context["departments_count"] = {
+            company.pk: company.departments.count() for company in companies
+        }
+        context["offices_count"] = {
+            company.pk: company.company_offices.count()
+            for company in companies
+        }
         context["company_exists"] = {
-            company.pk: (datetime.date.today() - company.created_at_staff).days + 1
+            company.pk: (datetime.date.today() - company.created_at_staff).days
+            + 1
             for company in companies
         }
         context["total_companies"] = companies.count()
@@ -130,11 +138,16 @@ class DepartmentCreateView(CreateView):
 
 class DepartmentDeleteView(DeleteView):
     model = Department
-    success_url = reverse_lazy("staff_app:department-list")
 
     def get_object(self):
         return get_object_or_404(
             Department, pk=self.kwargs["id"], company_id=self.kwargs["pk"]
+        )
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "staff_app:department-list",
+            kwargs={"pk": self.kwargs["pk"]},
         )
 
 
@@ -168,7 +181,6 @@ class DepartmentDetailView(DetailView, MultipleObjectMixin):
         context["positions"] = self.object.positions.all()[:5]
         return context
 
-
     def get_success_url(self):
         return self.object.get_absolute_url()
 
@@ -178,9 +190,9 @@ class DepartmentListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return self.model.objects.select_related(
-            "company"
-        ).filter(company__pk=self.kwargs["pk"])
+        return self.model.objects.select_related("company").filter(
+            company__pk=self.kwargs["pk"]
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -222,14 +234,22 @@ class PositionListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return self.model.objects.select_related("department").filter(department_id=self.kwargs["id"])
+        return self.model.objects.select_related("department").filter(
+            department_id=self.kwargs["id"]
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["department"] = Department.objects.select_related(
-            "company",
-        ).prefetch_related("positions").get(pk=self.kwargs["id"])
-        context["department_total_positions"] = context["department"].positions.count()
+        context["department"] = (
+            Department.objects.select_related(
+                "company",
+            )
+            .prefetch_related("positions")
+            .get(pk=self.kwargs["id"])
+        )
+        context["department_total_positions"] = context[
+            "department"
+        ].positions.count()
         return context
 
 
@@ -341,7 +361,7 @@ class OfficeDeleteView(DeleteView):
 
 
 class RegistrationView(CreateView):
-    template_name = 'registration/register.html'
+    template_name = "registration/register.html"
     form_class = RegistrationForm
     success_url = reverse_lazy("staff_app:clientarea")
 
